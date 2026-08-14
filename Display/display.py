@@ -1,16 +1,23 @@
 import sqlite3
 from pathlib import Path
+from datetime import date
 
-def display():
+def display(year,month):
     database_path = Path(__file__).resolve().parent.parent / "database.db"
     connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     query = """
-    SELECT category, amount FROM expenses
+    SELECT category, SUM(amount) FROM expenses
+    WHERE year = ? AND month = ?
+    GROUP BY category
     """
-    outprint = cursor.execute(query)
-    a= outprint.fetchall()
+    result = cursor.execute(query,(year,month)).fetchall()
     connection.close()
-    print(a)
+    #print(result)
+    # Create table
+    for entry in result:
+        print(f'{entry[0]}: {entry[1]}')
 
-display()
+
+year, month = str(date.today()).split('-')[0:2]
+display(year,month)
