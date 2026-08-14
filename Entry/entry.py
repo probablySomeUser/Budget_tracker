@@ -1,3 +1,4 @@
+import math
 import sqlite3
 from pathlib import Path
 from datetime import date
@@ -29,7 +30,7 @@ def enter():
             day = input('What day was the purchase?\n')
     amount = int(float(input('What did you pay?:\n'))*100) #Stores the amount in øre
     print('What is the cateory? Your options are')
-    categories = ['Rent','Insurance','Subsriptions','Internet','Food','Non-food','Transport','Fun','Other']
+    categories = ['Rent','Insurance','Subscriptions','Internet','Food','Non-food','Transport','Fun','Other']
     counter = 1
     for i in categories:
         print(counter, ') ',i)
@@ -55,5 +56,15 @@ def enter():
     cursor.execute(query,(year,month,day,amount,category,store))
     connection.commit()
     connection.close()
-
 enter()
+while True:
+    answer = input('Is that all? [y/n]\n')
+    match answer:
+        case 'y':
+            break
+        case 'n':
+            enter()
+            continue
+        case _:
+            print('I did not understand that, try again')
+    
