@@ -4,7 +4,7 @@ def main():
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     query = """
-    CREATE TABLE IF NOT EXISTS tracking (
+    CREATE TABLE IF NOT EXISTS expenses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     year INTEGER,
     month INTEGER,
