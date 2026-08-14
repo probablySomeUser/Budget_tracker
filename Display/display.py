@@ -9,7 +9,7 @@ def display():
     SELECT category, amount FROM expenses
     """
     outprint = cursor.execute(query)
-    a= outprint.fetchmany(2)
+    a= outprint.fetchall()
     connection.close()
     print(a)
 
