@@ -7,7 +7,7 @@ def display(year,month):
     connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     query = """
-    SELECT category, SUM(amount) FROM expenses
+    SELECT category, SUM(amount)/100 FROM expenses
     WHERE year = ? AND month = ?
     GROUP BY category
     """
@@ -18,6 +18,6 @@ def display(year,month):
     for entry in result:
         print(f'{entry[0]}: {entry[1]}')
 
-
-year, month = str(date.today()).split('-')[0:2]
-display(year,month)
+if __name__ == '__main__':
+    year, month = str(date.today()).split('-')[0:2]
+    display(year,month)

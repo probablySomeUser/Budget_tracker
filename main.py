@@ -1,6 +1,10 @@
+from math import e
 import sqlite3
+from pathlib import Path
+from Entry import entry
+from Display import display
 
-def main():
+def create_table():
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     query = """
@@ -17,6 +21,27 @@ def main():
     cursor.execute(query)
     connection.commit()
     connection.close()
+
+def main():
+    create_table()
+    print('What do you want to do?')
+    print('1) Enter expense(s)')
+    print('2) See monthly display')
+    while True:
+        try:
+            answer = int(input())
+        except:
+            print('That is not a number')
+            continue
+        match answer:
+            case 1:
+                entry.enter()
+                break
+            case 2:
+                display.display(2026,8)
+                break
+            case _:
+                continue
 
 if __name__ == '__main__':
     main()

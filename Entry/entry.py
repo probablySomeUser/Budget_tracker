@@ -2,12 +2,9 @@ import math
 import sqlite3
 from pathlib import Path
 from datetime import date
-from unicodedata import category
-
 
 def enter():
     database_path = Path(__file__).resolve().parent.parent / "database.db"
-    global date
     print('You have chosen to enter a purchase. When was the purchase?')
     print('1) Today')
     print('2) This month, but not today')
@@ -56,15 +53,16 @@ def enter():
     cursor.execute(query,(year,month,day,amount,category,store))
     connection.commit()
     connection.close()
-enter()
-while True:
-    answer = input('Is that all? [y/n]\n')
-    match answer:
-        case 'y':
-            break
-        case 'n':
-            enter()
-            continue
-        case _:
-            print('I did not understand that, try again')
+if __name__ == '__main__':
+    enter()
+    while True:
+        answer = input('Is that all? [y/n]\n')
+        match answer:
+            case 'y':
+                break
+            case 'n':
+                enter()
+                continue
+            case _:
+                print('I did not understand that, try again')
     
