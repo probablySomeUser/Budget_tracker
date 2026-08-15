@@ -2,6 +2,29 @@ import sqlite3
 from pathlib import Path
 from datetime import date
 
+def get_time(unit,message):
+    match unit:
+        case 'day':
+            maximum = 31
+            minimum = 1
+        case 'month':
+            maximum = 12
+            minimum  = 1
+        case 'year':
+            maximum = 3000
+            minimum = 0
+    while True:
+        try:
+            answer = int(input(message))
+        except:
+            print('Not at number')
+            continue
+        if minimum <= answer <= maximum:
+            break
+        else:
+            print('That number is not accepted')
+    return answer
+
 def display(year,month):
     database_path = Path(__file__).resolve().parent.parent / "database.db"
     connection = sqlite3.connect(database_path)
@@ -41,8 +64,8 @@ def process():
                 display(year,month)
                 break
             case 3:
-                year = input('What year?\n')
-                month = input('What month?\n')
+                year = get_time('year','What year?\n')
+                month = get_time('month','What month?\n')
                 display(year,month)
                 break
             case _:

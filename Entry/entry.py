@@ -1,7 +1,30 @@
-import math
 import sqlite3
 from pathlib import Path
 from datetime import date
+
+def get_time(unit,message):
+    match unit:
+        case 'day':
+            maximum = 31
+            minimum = 1
+        case 'month':
+            maximum = 12
+            minimum  = 1
+        case 'year':
+            maximum = 3000
+            minimum = 0
+    while True:
+        try:
+            answer = int(input(message))
+        except:
+            print('Not at number')
+            continue
+        if minimum <= answer <= maximum:
+            break
+        else:
+            print('That number is not accepted')
+    return answer
+
 
 def enter():
     database_path = Path(__file__).resolve().parent.parent / "database.db"
@@ -20,12 +43,20 @@ def enter():
             year,month,day = str(date.today()).split('-')
         case 2: 
             year, month = str(date.today()).split('-')[0:2]
-            day = int(input('What day was it?\n'))
+            day = get_time('day','What day was the purchase?\n')
         case 3:
-            year = input('What year was the purchase?\n')
-            month = input('What month was the purchase?\n')
-            day = input('What day was the purchase?\n')
-    amount = int(float(input('What did you pay?:\n'))*100) #Stores the amount in øre
+            year = get_time('year','What year was the purchase?\n')
+            month = get_time('month','What month was the purchase?\n')
+            day = get_time('day','What day was the purchase?\n')
+    while True:
+        try:
+            amount = int(float(input('How much did you pay(kr)?:\n'))*100) #Stores the amount in øre
+            if amount > 0:
+                break
+            else:
+                print("I don't believe that")
+        except:
+            print('That is not a number')
     print('What is the cateory? Your options are')
     categories = ['Rent','Insurance','Subscriptions','Internet','Food','Non-food','Transport','Fun','Other']
     counter = 1
@@ -43,7 +74,12 @@ def enter():
         else:
             print('That is not an option')
     category = categories[answer-1]
-    store = input('Where did you buy it?\n')
+    while True:
+        store = input('Where did you buy it?\n')
+        if store != '':
+            break
+        else:
+            print('Please enter something')
     connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     query = """
@@ -66,7 +102,3 @@ def process():
                 continue
             case _:
                 print('I did not understand that, try again')
-
-if __name__ == '__main__':
-    process()
-    
