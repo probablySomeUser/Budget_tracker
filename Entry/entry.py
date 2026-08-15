@@ -53,7 +53,8 @@ def enter():
     cursor.execute(query,(year,month,day,amount,category,store))
     connection.commit()
     connection.close()
-if __name__ == '__main__':
+
+def process():
     enter()
     while True:
         answer = input('Is that all? [y/n]\n')
@@ -65,4 +66,7 @@ if __name__ == '__main__':
                 continue
             case _:
                 print('I did not understand that, try again')
+
+if __name__ == '__main__':
+    process()
     

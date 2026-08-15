@@ -1,4 +1,3 @@
-from math import e
 import sqlite3
 from pathlib import Path
 from Entry import entry
@@ -35,10 +34,10 @@ def main():
             continue
         match answer:
             case 1:
-                entry.enter()
+                entry.process()
                 break
             case 2:
-                display.display(2026,8)
+                display.process()
                 break
             case _:
                 continue
