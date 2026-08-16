@@ -1,7 +1,6 @@
 import sqlite3
-from pathlib import Path
-from Entry import entry
-from Display import display
+import entry
+import display
 
 def create_table():
     connection = sqlite3.connect('database.db')

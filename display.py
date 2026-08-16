@@ -1,5 +1,4 @@
 import sqlite3
-from pathlib import Path
 from datetime import date
 
 def get_time(unit,message):
@@ -26,8 +25,7 @@ def get_time(unit,message):
     return answer
 
 def display(year,month):
-    database_path = Path(__file__).resolve().parent.parent / "database.db"
-    connection = sqlite3.connect(database_path)
+    connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     query = """
     SELECT category, SUM(amount) FROM expenses

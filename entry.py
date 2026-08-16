@@ -1,5 +1,4 @@
 import sqlite3
-from pathlib import Path
 from datetime import date
 from sys import exit
 
@@ -57,8 +56,7 @@ def get_price_of_category(amount,total):
             return sub_amount,total
 
 def add_to_database(year,month,day,amount,category,store):
-    database_path = Path(__file__).resolve().parent.parent / "database.db"
-    connection = sqlite3.connect(database_path)
+    connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
@@ -87,8 +85,7 @@ def select_category(categories):
     return category
 
 def multiple_categories(amount,categories,year,month,day,store):
-    database_path = Path(__file__).resolve().parent.parent / "database.db"
-    connection = sqlite3.connect(database_path)
+    connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     print('What is the first category? Your options are')
     category = select_category(categories)
