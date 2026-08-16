@@ -1,6 +1,7 @@
 import sqlite3
 import entry
 import display
+import correcting
 
 def create_table():
     connection = sqlite3.connect('database.db')
@@ -25,6 +26,7 @@ def main():
     print('What do you want to do?')
     print('1) Enter expense(s)')
     print('2) See monthly display')
+    print('3) Correct entry')
     while True:
         try:
             answer = int(input())
@@ -38,7 +40,11 @@ def main():
             case 2:
                 display.process()
                 break
+            case 3:
+                correcting.correcting()
+                break
             case _:
+                print('That is not an option')
                 continue
 
 if __name__ == '__main__':
