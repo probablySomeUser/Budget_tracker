@@ -1,6 +1,10 @@
 import entry
 import sqlite3
 from datetime import date
+from utils import get_int
+from utils import yes_no
+from utils import get_connection
+from utils import close_connection
 
 def correcting():
     #Select month

@@ -3,8 +3,13 @@ import entry
 import display
 import correcting
 
+from utils import get_int
+from utils import yes_no
+from utils import get_connection
+from utils import close_connection
+
 def create_table():
-    connection = sqlite3.connect('database.db')
+    connection = get_connection()
     cursor = connection.cursor()
     query = """
     CREATE TABLE IF NOT EXISTS expenses (
@@ -18,34 +23,21 @@ def create_table():
     );    
     """
     cursor.execute(query)
-    connection.commit()
-    connection.close()
+    close_connection(connection)
 
 def main():
     create_table()
     print('What do you want to do?')
     print('1) Enter expense(s)')
     print('2) See monthly display')
-    print('3) Correct entry')
-    while True:
-        try:
-            answer = int(input())
-        except:
-            print('That is not a number')
-            continue
-        match answer:
-            case 1:
-                entry.process()
-                break
-            case 2:
-                display.process()
-                break
-            case 3:
-                correcting.correcting()
-                break
-            case _:
-                print('That is not an option')
-                continue
+    print('3) Correct entry',end='')
+    match get_int(1,3,"\n"):
+        case 1:
+            entry.process()
+        case 2:
+            display.process()
+        case 3:
+            correcting.correcting()
 
 if __name__ == '__main__':
     main()
