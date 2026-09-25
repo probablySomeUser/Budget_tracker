@@ -16,20 +16,11 @@ def get_time(unit,message):
         case 'year':
             maximum = 3000
             minimum = 0
-    while True:
-        try:
-            answer = int(input(message))
-        except:
-            print('Not at number')
-            continue
-        if minimum <= answer <= maximum:
-            break
-        else:
-            print('That number is not accepted')
+    answer = get_int(minimum,maximum,message)
     return answer
 
 def display(year,month):
-    connection = sqlite3.connect('database.db')
+    connection = get_connection()
     cursor = connection.cursor()
     query = """
     SELECT category, SUM(amount) FROM expenses
@@ -47,28 +38,19 @@ def process():
     print('1) This month')
     print('2) Last month')
     print('3) Another month')
-    while True:
-        try:
-            answer = int(input())
-        except:
-            print('That is not a number. Try again')
-        match answer:
-            case 1:
-                year,month = str(date.today()).split('-')[0:2]
-                display(year,month)
-                break
-            case 2:
-                year,month = str(date.today()).split('-')[0:2]
-                month = (int(month)-1)%12
-                if month == 0:
-                    month = 12
-                    year = int(year) -1
-                display(year,month)
-                break
-            case 3:
-                year = get_time('year','What year?\n')
-                month = get_time('month','What month?\n')
-                display(year,month)
-                break
-            case _:
-                print('That is not an option')
+    answer = get_int(1,3,"")
+    match answer:
+        case 1:
+            year,month = str(date.today()).split('-')[0:2]
+            display(year,month)
+        case 2:
+            year,month = str(date.today()).split('-')[0:2]
+            month = (int(month)-1)%12
+            if month == 0:
+                month = 12
+                year = int(year) -1
+            display(year,month)
+        case 3:
+            year = get_time('year','What year?\n')
+            month = get_time('month','What month?\n')
+            display(year,month)
