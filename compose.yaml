@@ -1,0 +1,30 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      DB_HOST: db
+      POSTGRES_DB: expenses
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    depends_on:
+      db:
+        condition: service_healthy
+        
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: expenses
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "expenses"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+volumes:
+  db-data:

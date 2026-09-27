@@ -1,3 +1,4 @@
+import psycopg
 import entry
 import sqlite3
 from datetime import date

@@ -1,9 +1,28 @@
+import psycopg
+import os
+import time
 import sqlite3
 import entry
 import display
 import correcting
 
 def create_table():
+    #Connect to database
+    while True:
+        conn = psycopg.connectpsycopg.connect(
+            host=os.environ["DB_HOST"],
+            dbname=os.environ["POSTGRES_DB"],
+            user=os.environ["POSTGRES_USER"],
+            password=os.environ["POSTGRES_PASSWORD"],
+        )
+    #Create table
+
+    #Commit changes
+
+
+
+
+
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     query = """
