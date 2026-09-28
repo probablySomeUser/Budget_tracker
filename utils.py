@@ -6,6 +6,7 @@ def get_int(minimum:int,maximum:int,message:str,error_message_not_integer="That 
             answer = int(input(message))
         except:
             print(error_message_not_integer)
+            continue
         if minimum <= answer <= maximum:
             break
         else:
