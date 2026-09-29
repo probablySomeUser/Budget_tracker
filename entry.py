@@ -1,6 +1,10 @@
 import sqlite3
 from datetime import date
 from sys import exit
+from utils import get_int
+from utils import yes_no
+from utils import get_connection
+from utils import close_connection
 
 def get_time(unit,message):
     match unit:
@@ -13,21 +17,12 @@ def get_time(unit,message):
         case 'year':
             maximum = 3000
             minimum = 0
-    while True:
-        try:
-            answer = int(input(message))
-        except:
-            print('Not at number')
-            continue
-        if minimum <= answer <= maximum:
-            break
-        else:
-            print('That number is not accepted')
+    answer = get_int(minimum,maximum,message)
     return answer
 
 def get_price_of_category(amount,total):
     sub_amount = 0
-    while True: #Gets price
+    while True: 
         while True:
            try:
                price = int(float(input('Price of item:\n'))*100)
@@ -44,48 +39,31 @@ def get_price_of_category(amount,total):
             print('You have spent more than you originally said??')
             exit()
         #Ask if category is done
-        while True:
-            answer = input('Is this the final item of the category?[y/n]')
-            match answer:
-                case 'y'|'n':
-                    break
-                case _:
-                    print('I did not understand that')
-                    continue
+        answer = yes_no("Is this the final item of the category? [y/n]\n")
         if answer == 'y':
             return sub_amount,total
 
 def add_to_database(year,month,day,amount,category,store):
-    connection = sqlite3.connect('database.db')
+    connection = get_connection()
     cursor = connection.cursor()
     query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
         VALUES (?,?,?,?,?,?)
     """
     cursor.execute(query,(year,month,day,amount,category,store))
-    connection.commit()
-    connection.close()
+    close_connection(connection)
 
 def select_category(categories):
     counter = 1
     for i in categories:
         print(counter, ') ',i)
         counter += 1
-    while True: #Selects category
-        try:
-           answer = int(input())
-        except:
-            print('That is not a number')
-            continue
-        if 0<answer <= counter:
-            break
-        else:
-            print('That is not an option')
+    answer = get_int(1,len(categories),"")
     category = categories[answer-1]
     return category
 
 def multiple_categories(amount,categories,year,month,day,store):
-    connection = sqlite3.connect('database.db')
+    connection = get_connection()
     cursor = connection.cursor()
     print('What is the first category? Your options are')
     category = select_category(categories)
@@ -100,30 +78,23 @@ def multiple_categories(amount,categories,year,month,day,store):
         print('What is the next category?\n')
         category = select_category(categories)
         #Ask if is final category
-        while True:
-                answer = input('Is this the final category?[y/n]\n')
-                match answer:
-                    case 'y':
-                        query = """
+        answer = yes_no("Is this the final category? [y/n]\n")
+        match answer:
+            case 'y':
+                query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
         VALUES (?,?,?,?,?,?)
     """
-                        cursor.execute(query,(year,month,day,amount-total,category,store))
-                        break
-                    case 'n':
-                        sub_amount,total = get_price_of_category(amount,total)
-                        query = """
+                cursor.execute(query,(year,month,day,amount-total,category,store))
+            case 'n':
+                query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
         VALUES (?,?,?,?,?,?)
-        """
-                        cursor.execute(query,(year,month,day,sub_amount,category,store))
-                        break
-                    case _:
-                        print('I do not understand')
+    """
+                cursor.execute(query,(year,month,day,amount-total,category,store))
         if answer == 'y':
                     break
-    connection.commit()
-    connection.close()
+    close_connection(connection)
 
 
 
@@ -132,12 +103,7 @@ def enter():
     print('1) Today')
     print('2) This month, but not today')
     print('3) Not this month')
-    while True:
-        answer=int(input())
-        if answer in (1,2,3):
-            break
-        else:
-            print('That was not an option')
+    answer = get_int(1,3,"")
     match answer:
         case 1:
             year,month,day = str(date.today()).split('-')
@@ -170,16 +136,8 @@ def enter():
     for i in categories:
         print(counter, ') ',i)
         counter += 1
-    while True:
-        try:
-           answer = int(input())
-        except:
-            print('That is not a number')
-            continue
-        if 0<=answer <= counter:
-            break
-        else:
-            print('That is not an option')
+    answer = get_int(0,len(categories),"")
+
     if answer == 0:
         multiple_categories(amount,categories,year,month,day,store)
         return 0
@@ -191,12 +149,10 @@ def enter():
 def process():
     enter()
     while True:
-        answer = input('Is that all? [y/n]\n')
+        answer = yes_no("is that all? [y/n]\n")
         match answer:
             case 'y':
                 break
             case 'n':
                 enter()
                 continue
-            case _:
-                print('I did not understand that, try again')
