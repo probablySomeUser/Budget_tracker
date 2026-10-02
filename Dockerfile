@@ -1,4 +1,4 @@
-FROM Python:3.14.6 -slim as base
+FROM python:3.14.6-alpine
 ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
