@@ -1,7 +1,7 @@
-import psycopg
+#import psycopg
 import os
 import time
-import sqlite3
+#import sqlite3
 import entry
 import display
 import correcting
@@ -16,7 +16,7 @@ def create_table():
     cursor = connection.cursor()
     query = """
     CREATE TABLE IF NOT EXISTS expenses (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     year INTEGER,
     month INTEGER,
     day INTEGER,
@@ -29,6 +29,9 @@ def create_table():
     close_connection(connection)
 
 def main():
+    print("STARTING")
+    answer = input("TYPE SOMETHING: ")
+    print(f"You typed: {answer}")
     create_table()
     print('What do you want to do?')
     print('1) Enter expense(s)')

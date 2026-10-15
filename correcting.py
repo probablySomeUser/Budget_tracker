@@ -23,7 +23,7 @@ def correcting():
     cursor = connection.cursor()
     query = """
     SELECT * FROM expenses
-    WHERE year = ? AND month = ?
+    WHERE year = %s AND month = %s
     ORDER BY day ASC
     """
     expenses = cursor.execute(query,(year,month)).fetchall()
@@ -60,7 +60,7 @@ def correcting():
     if answer ==1:
         query = '''
         DELETE FROM expenses
-        WHERE id = ?
+        WHERE id = %s
         '''
         cursor.execute(query,(expense,))
     else: #Change
@@ -92,10 +92,10 @@ def correcting():
                 replacement = entry.select_category(categories)
             case 'store':
                 replacement = input('What is it then?\n')
-        query = f'''
+        query = f"""
             UPDATE expenses
-            SET {column} = ?
-            WHERE id = ?
-            '''
+            SET {column} = %s
+            WHERE id = %s
+            """
         cursor.execute(query,(replacement,expense))
     close_connection(connection)

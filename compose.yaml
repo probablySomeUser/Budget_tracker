@@ -2,6 +2,8 @@ services:
   server:
     build:
       context: .
+    stdin_open: true
+    tty: true
     environment:
       DB_HOST: db
       POSTGRES_DB: expenses

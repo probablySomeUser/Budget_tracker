@@ -24,7 +24,7 @@ def display(year,month):
     cursor = connection.cursor()
     query = """
     SELECT category, SUM(amount) FROM expenses
-    WHERE year = ? AND month = ?
+    WHERE year = %s AND month = %s
     GROUP BY category
     """
     result = cursor.execute(query,(year,month)).fetchall()

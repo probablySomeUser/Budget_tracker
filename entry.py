@@ -48,7 +48,7 @@ def add_to_database(year,month,day,amount,category,store):
     cursor = connection.cursor()
     query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
-        VALUES (?,?,?,?,?,?)
+        VALUES (%s,%s,%s,%s,%s,%s)
     """
     cursor.execute(query,(year,month,day,amount,category,store))
     close_connection(connection)
@@ -71,7 +71,7 @@ def multiple_categories(amount,categories,year,month,day,store):
     sub_amount,total = get_price_of_category(amount,total)
     query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
-        VALUES (?,?,?,?,?,?)
+        VALUES (%s,%s,%s,%s,%s,%s)
         """
     cursor.execute(query,(year,month,day,sub_amount,category,store))
     while True: #Deals with the remaining categories
@@ -83,13 +83,13 @@ def multiple_categories(amount,categories,year,month,day,store):
             case 'y':
                 query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
-        VALUES (?,?,?,?,?,?)
+        VALUES (%s,%s,%s,%s,%s,%s)
     """
                 cursor.execute(query,(year,month,day,amount-total,category,store))
             case 'n':
                 query = """
         INSERT INTO expenses (year, month, day, amount, category, store)
-        VALUES (?,?,?,?,?,?)
+        VALUES (%s,%s,%s,%s,%s,%s)
     """
                 cursor.execute(query,(year,month,day,amount-total,category,store))
         if answer == 'y':

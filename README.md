@@ -1,4 +1,4 @@
 # Budget_tracker
-A budget tracker in python with an SQLite database
+An expense tracker made in python using a postreSQL databse in docker
 
-Run main.py and follow the instructions as given. 
+To run it you first open docker. If you run it for the first time you run it with the command "docker compose run --build --rm -it server". Subsequent runs can be carried out by "docker compose run --rm -it server"
